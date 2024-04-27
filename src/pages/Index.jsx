@@ -28,9 +28,9 @@ const Index = () => {
 
   useEffect(() => {
     const loadDomains = async () => {
-      const { data } = await client.getWithPrefix('domain-');
+      const data = await client.getWithPrefix('domain-');
       if (data) {
-        const loadedDomains = data.map(item => item.value.name);
+        const loadedDomains = data.map(item => item.name);
         setDomains(loadedDomains);
       }
     };
