@@ -54,13 +54,14 @@ const Index = () => {
 
   return (
     <Box>
+      <Text fontSize="2xl" mb="4">Domain Management</Text>
       <Input placeholder="Add new domain" value={domain} onChange={(e) => setDomain(e.target.value)} />
       <Button onClick={handleAddDomain}>Add Domain</Button>
       <List>
         {domains.map((domain, index) => (
-          <ListItem key={index}>
+          <ListItem key={index} display="flex" justifyContent="space-between" alignItems="center">
             {domain}
-            <Button onClick={() => handleRemoveDomain(domain)}>Remove</Button>
+            <Button colorScheme="red" size="sm" onClick={() => handleRemoveDomain(domain)}>Remove</Button>
           </ListItem>
         ))}
       </List>
