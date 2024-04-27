@@ -1,4 +1,4 @@
-import { Box, Input, Button, List, ListItem, useToast } from '@chakra-ui/react';
+import { Box, Input, Button, List, ListItem, useToast, VStack, Heading, Text } from '@chakra-ui/react';
 import { useState, useEffect } from "react";
 import { getClient } from "lib/supabase";
 
@@ -53,12 +53,16 @@ const Index = () => {
   }, []);
 
   return (
-    <Box>
-      <Input placeholder="Add new domain" value={domain} onChange={(e) => setDomain(e.target.value)} />
-      <Button onClick={handleAddDomain}>Add Domain</Button>
+    <Box p={8} maxW="800px" m="auto" mt="5vh" bg="white" boxShadow="lg">
+      <Heading as="h1" size="xl" textAlign="center" mb={6}>Domain Management</Heading>
+      <Text fontSize="lg" textAlign="center" mb={4}>Manage your domains efficiently and effectively.</Text>
+      <VStack spacing={4}>
+        <Input placeholder="Add new domain" value={domain} onChange={(e) => setDomain(e.target.value)} />
+        <Button colorScheme="blue" onClick={handleAddDomain}>Add Domain</Button>
+      </VStack>
       <List>
         {domains.map((domain, index) => (
-          <ListItem key={index} display="flex" justifyContent="space-between" alignItems="center">
+          <ListItem key={index} display="flex" justifyContent="space-between" alignItems="center" p={2} borderBottom="1px" borderColor="gray.200">
             {domain}
             <Button colorScheme="red" size="sm" onClick={() => handleRemoveDomain(domain)}>Remove</Button>
           </ListItem>
