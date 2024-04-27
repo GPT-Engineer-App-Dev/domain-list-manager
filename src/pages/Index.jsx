@@ -1,48 +1,53 @@
-// Complete the Index page component here
-// Use chakra-ui
-import { Button } from "@chakra-ui/react"; // example
-import { FaPlus } from "react-icons/fa"; // example - use react-icons/fa for icons
-import { getClient } from "lib/supabase";
-
+import { Box, Input, Button, List, ListItem, useToast } from '@chakra-ui/react';
 import { useState, useEffect } from "react";
+import { getClient } from "lib/supabase";
 
 const Index = () => {
   const client = getClient('testproject');
-  const key = 'testkey';
+  const toast = useToast();
 
-  // state mgmt
-  const [objects, setObjects] = useState([]);
-  const [clicks, setClicks] = useState(0);
-  
-  // write onClick function
-  const handleClick = () => {
-    console.log("Button clicked");
-    client.set(key, clicks + 1);
-    setClicks(clicks + 1);
+  const [domain, setDomain] = useState('');
+  const [domains, setDomains] = useState([]);
+
+  const handleAddDomain = async () => {
+    if (domain) {
+      const success = await client.set(`domain-${domain}`, { name: domain });
+      if (success) {
+        setDomains([...domains, domain]);
+        setDomain('');
+        toast({
+          title: 'Domain added.',
+          description: "We've added your domain to the list.",
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+    }
   };
 
-  // effect
   useEffect(() => {
-    // fetch data
-    const fetchData = async () => {
-      const client = getClient('testproject');
-      const { data, error } = await client.get(key);
-      if (error) {
-        console.error("error", error);
-      } else {
-        console.log("data", data);
+    const loadDomains = async () => {
+      const { data } = await client.getWithPrefix('domain-');
+      if (data) {
+        const loadedDomains = data.map(item => item.value.name);
+        setDomains(loadedDomains);
       }
-      setObjects(data);
-    };  
-    fetchData();
+    };
+    loadDomains();
   }, []);
 
-  // TODO: Create the website here!
   return (
-    <Button onClick={handleClick} leftIcon={<FaPlus />}>
-      Hello world! <FaPlus />
-    </Button>
-  ); // example
+    <Box>
+      <Input placeholder="Add new domain" value={domain} onChange={(e) => setDomain(e.target.value)} />
+      <Button onClick={handleAddDomain}>Add Domain</Button>
+      <List>
+        {domains.map((domain, index) => (
+          <ListItem key={index}>{domain}</ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 };
 
 export default Index;
