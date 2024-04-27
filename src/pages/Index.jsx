@@ -58,9 +58,9 @@ const Index = () => {
       <Text fontSize="lg" textAlign="center" mb={4}>Manage your domains efficiently and effectively.</Text>
       <VStack spacing={4}>
         <VStack spacing={4}>
-        <Input placeholder="Add new domain" value={domain} onChange={(e) => setDomain(e.target.value)} />
-        <Button colorScheme="blue" onClick={handleAddDomain}>Add Domain</Button>
-      </VStack>
+          <Input placeholder="Add new domain" value={domain} onChange={(e) => setDomain(e.target.value)} />
+          <Button colorScheme="blue" onClick={handleAddDomain}>Add Domain</Button>
+        </VStack>
       <List>
         {domains.map((domain, index) => (
           <ListItem key={index} display="flex" justifyContent="space-between" alignItems="center" p={2} borderBottom="1px" borderColor="gray.200">
