@@ -26,6 +26,21 @@ const Index = () => {
     }
   };
 
+  const handleRemoveDomain = async (domainToRemove) => {
+    const success = await client.delete(`domain-${domainToRemove}`);
+    if (success) {
+      const updatedDomains = domains.filter(domain => domain !== domainToRemove);
+      setDomains(updatedDomains);
+      toast({
+        title: 'Domain removed.',
+        description: "The domain has been removed from the list.",
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
+
   useEffect(() => {
     const loadDomains = async () => {
       const data = await client.getWithPrefix('domain-');
@@ -43,7 +58,10 @@ const Index = () => {
       <Button onClick={handleAddDomain}>Add Domain</Button>
       <List>
         {domains.map((domain, index) => (
-          <ListItem key={index}>{domain}</ListItem>
+          <ListItem key={index}>
+            {domain}
+            <Button onClick={() => handleRemoveDomain(domain)}>Remove</Button>
+          </ListItem>
         ))}
       </List>
     </Box>
